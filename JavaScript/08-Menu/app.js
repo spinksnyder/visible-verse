@@ -71,13 +71,75 @@ const menu = [
     img: "./images/item-9.jpeg",
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
+  {
+    id: 10,
+    title: "Dragon food",
+    category: "dinner",
+    price: 36.99,
+    img: "./images/item-10.jpeg",
+    desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
+  },
 ];
 
 // select section-center and add text as innerHTML
 const sectionCenter = document.querySelector(".section-center");
 
 window.addEventListener("DOMContentLoaded", function () {
-  let displayMenuItems = menu.map(function (menuItem) {
+  displayMenuItems(menu);
+});
+
+// get all unique catagories from menu and display them
+window.addEventListener("DOMContentLoaded", function () {
+  const uniqueMenuCatagories = getUniqueMenuCatagories();
+  const catagoriesButtons = generateCatagoriesButtons(uniqueMenuCatagories);
+  const buttonContainer = document.querySelector(".btn-container");
+  buttonContainer.innerHTML = catagoriesButtons;
+  let filterButtons = document.querySelectorAll(".filter-btn");
+  applyFilterCatagories(filterButtons);
+});
+
+function applyFilterCatagories(filterButtons) {
+  filterButtons.forEach(function (btn) {
+    btn.addEventListener("click", function (event) {
+      // get data-* attribute given on each button
+      const catagory = event.currentTarget.dataset.id;
+      // filter menu based on catagory
+      let filterdMenuItem = menu.filter(function (menuItem) {
+        if (menuItem.category === catagory) {
+          return menuItem;
+        }
+      });
+
+      // display based on condition
+      if (catagory === "all") {
+        displayMenuItems(menu);
+      } else displayMenuItems(filterdMenuItem);
+    });
+  });
+}
+
+function getUniqueMenuCatagories() {
+  return menu.reduce(
+    function (value, menuItem) {
+      if (!value.includes(menuItem.category)) {
+        value.push(menuItem.category);
+      }
+      return value;
+    },
+    ["all"]
+  );
+}
+
+function generateCatagoriesButtons(catagories) {
+  return catagories
+    .map(function (catagory) {
+      return `<button type="button" class="filter-btn" data-id=${catagory}>${catagory}</button>`;
+    })
+    .join("");
+}
+
+function displayMenuItems(menuItems) {
+  let displayMenuItems = menuItems.map(function (menuItem) {
     return `<article class="menu-item">
           <img src=${menuItem.img} alt=${menuItem.title} class="photo" />
           <div class="item-info">
@@ -94,4 +156,4 @@ window.addEventListener("DOMContentLoaded", function () {
   // make array as string
   displayMenuItems = displayMenuItems.join("");
   sectionCenter.innerHTML = displayMenuItems;
-});
+}
