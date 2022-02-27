@@ -83,6 +83,7 @@ const menu = [
 
 // select section-center and add text as innerHTML
 const sectionCenter = document.querySelector(".section-center");
+var filterButtons;
 
 window.addEventListener("DOMContentLoaded", function () {
   displayMenuItems(menu);
@@ -94,29 +95,26 @@ window.addEventListener("DOMContentLoaded", function () {
   const catagoriesButtons = generateCatagoriesButtons(uniqueMenuCatagories);
   const buttonContainer = document.querySelector(".btn-container");
   buttonContainer.innerHTML = catagoriesButtons;
-  let filterButtons = document.querySelectorAll(".filter-btn");
-  applyFilterCatagories(filterButtons);
+  filterButtons = document.querySelectorAll(".filter-btn");
 });
 
-function applyFilterCatagories(filterButtons) {
-  filterButtons.forEach(function (btn) {
-    btn.addEventListener("click", function (event) {
-      // get data-* attribute given on each button
-      const catagory = event.currentTarget.dataset.id;
-      // filter menu based on catagory
-      let filterdMenuItem = menu.filter(function (menuItem) {
-        if (menuItem.category === catagory) {
-          return menuItem;
-        }
-      });
-
-      // display based on condition
-      if (catagory === "all") {
-        displayMenuItems(menu);
-      } else displayMenuItems(filterdMenuItem);
+filterButtons.forEach(function (btn) {
+  btn.addEventListener("click", function (event) {
+    // get data-* attribute given on each button
+    const catagory = event.currentTarget.dataset.id;
+    // filter menu based on catagory
+    let filterdMenuItem = menu.filter(function (menuItem) {
+      if (menuItem.category === catagory) {
+        return menuItem;
+      }
     });
+
+    // display based on condition
+    if (catagory === "all") {
+      displayMenuItems(menu);
+    } else displayMenuItems(filterdMenuItem);
   });
-}
+});
 
 function getUniqueMenuCatagories() {
   return menu.reduce(
