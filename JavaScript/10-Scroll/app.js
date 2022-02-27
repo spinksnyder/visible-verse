@@ -67,7 +67,7 @@ scrollLinks.forEach(function (link) {
     }
     // on small screen, links container height is also added so we will see some additional spaces before each section so to remove it, have to add container height to position
     const linksContainerHeight = linksContainer.getBoundingClientRect().height;
-    position = position + linksContainerHeight;
+    if (navHeight > 82) position = position + linksContainerHeight;
     window.scrollTo({
       left: 0,
       top: position,
